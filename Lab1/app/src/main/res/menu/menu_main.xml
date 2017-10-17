@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.user.testapp.MainActivity">
+    <item
+        android:id="@+id/camera"
+        android:orderInCategory="100"
+        android:title="Camera"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/search"
+        android:orderInCategory="101"
+        android:title="Search" />
+    <item
+        android:id="@+id/PushNot"
+        android:orderInCategory="102"
+        android:title="PushNotification" />
+</menu>
