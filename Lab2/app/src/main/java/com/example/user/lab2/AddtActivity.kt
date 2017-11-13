@@ -3,6 +3,7 @@ package com.example.user.lab2
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -42,6 +43,13 @@ class AddtActivity : AppCompatActivity() {
         timeField.setOnClickListener({_ ->
                 TimePickerDialog(this@AddtActivity, timePicker, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), false).show()
             })
+
+        addBtn.setOnClickListener({_ ->
+            val serviceIntent = Intent(this@AddtActivity, SerializeService::class.java)
+            val appointment = Appointment(myCalendar, editText.text.toString())
+            serviceIntent.putExtra("data", arrayOf(appointment))
+            startService(serviceIntent)
+        })
     }
     private fun updateDate(myCalendar : Calendar) {
         val myFormat = "MM/dd/yy"
@@ -69,4 +77,5 @@ class AddtActivity : AppCompatActivity() {
         }
         return super.dispatchTouchEvent(event)
     }
+
 }

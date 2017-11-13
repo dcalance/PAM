@@ -77,4 +77,22 @@
         android:layout_alignRight="@+id/dateField"
         android:layout_alignEnd="@+id/dateField" />
 
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="Button" />
+
+    <Button
+        android:id="@+id/desBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addBtn"
+        android:layout_alignEnd="@+id/editText"
+        android:layout_alignRight="@+id/editText"
+        android:text="Deserealise" />
+
 </RelativeLayout>
