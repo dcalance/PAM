@@ -15,7 +15,7 @@ import java.io.FileReader
 class DeserializeService : IntentService("DeserializeService") {
 
     private val mBinder = LocalBinder()
-    var result : Array<Appointment> = emptyArray()
+    var result = arrayOf<Appointment>()
 
     override fun onCreate() {
         super.onCreate()
@@ -26,9 +26,10 @@ class DeserializeService : IntentService("DeserializeService") {
         val file = File(storageDir.path, "save_file.bin")
 
         val gson = Gson()
-        val json = readStringFromFile(file)
-
-        result = gson.fromJson(json, Array<Appointment>::class.java)
+        if (file.exists()) {
+            val json = readStringFromFile(file)
+            result = gson.fromJson(json, Array<Appointment>::class.java)
+        }
     }
 
     inner class LocalBinder : Binder(){

@@ -17,6 +17,12 @@ import android.view.inputmethod.InputMethodManager
 
 
 class AddtActivity : AppCompatActivity() {
+    private val REQUEST_ADD = 2
+
+    override fun onStop() {
+        super.onStop()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addt)
@@ -28,28 +34,28 @@ class AddtActivity : AppCompatActivity() {
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDate(myCalendar)
         }
-        dateField.setOnClickListener({_ ->
+        dateField.setOnClickListener{_ ->
                 DatePickerDialog(this@AddtActivity, datePicker, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show()
             }
-        )
 
         val timePicker = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
             myCalendar.set(Calendar.MINUTE, minute)
             updateTime(myCalendar)
         }
-        timeField.setOnClickListener({_ ->
+        timeField.setOnClickListener{_ ->
                 TimePickerDialog(this@AddtActivity, timePicker, myCalendar.get(Calendar.HOUR_OF_DAY), myCalendar.get(Calendar.MINUTE), false).show()
-            })
+            }
 
-        addBtn.setOnClickListener({_ ->
-            val serviceIntent = Intent(this@AddtActivity, SerializeService::class.java)
+        addBtn.setOnClickListener{_ ->
             val appointment = Appointment(myCalendar, editText.text.toString())
-            serviceIntent.putExtra("data", arrayOf(appointment))
-            startService(serviceIntent)
-        })
+            val intent = Intent()
+            intent.putExtra("Record", appointment)
+            setResult(REQUEST_ADD, intent)
+            finish()
+        }
     }
     private fun updateDate(myCalendar : Calendar) {
         val myFormat = "MM/dd/yy"

@@ -18,7 +18,7 @@ class SerializeService : IntentService("SerializeService"){
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        val appointmentArr : Array<Appointment> = intent!!.extras.getSerializable("data") as Array<Appointment>
+        val appointmentArr = intent!!.extras.getSerializable("data") as ArrayList<Appointment>
         val storageDir = this.getExternalFilesDir(null)
         val file = File(storageDir.path, "save_file.bin")
 
