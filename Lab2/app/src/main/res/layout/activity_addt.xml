@@ -10,72 +10,71 @@
         android:id="@+id/timeField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
         android:ems="10"
+        android:focusable="false"
         android:inputType="time"
-        android:layout_alignBaseline="@+id/textView"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:focusable="false"/>
+        android:gravity="center"/>
 
     <EditText
         android:id="@+id/dateField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        android:layout_below="@+id/timeTextView"
+        android:layout_marginTop="11dp"
         android:ems="10"
+        android:focusable="false"
         android:inputType="date"
-        android:layout_marginTop="14dp"
-        android:layout_below="@+id/timeField"
-        android:layout_alignLeft="@+id/timeField"
-        android:layout_alignStart="@+id/timeField"
-        android:focusable="false"/>
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
         android:text="Time"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:layout_marginTop="33dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/timeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/timeField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
         android:text="Date"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:layout_alignBottom="@+id/dateField"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/dateField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
         android:text="Text"
         android:textAlignment="center"
-        android:textSize="30sp"
-        android:layout_alignTop="@+id/editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textSize="30sp" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dateField"
-        android:layout_marginTop="41dp"
+        android:layout_alignLeft="@+id/timeField"
+        android:layout_alignStart="@+id/timeField"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="22dp"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:layout_alignRight="@+id/dateField"
-        android:layout_alignEnd="@+id/dateField" />
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/addBtn"

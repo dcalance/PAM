@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlin.collections.ArrayList
 
@@ -21,6 +22,10 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val REQUEST_ADD = 2
+    private val REQUEST_UPDATE_OR_DELETE = 3
+
+    private val CODE_UPDATE = 100
+    private val CODE_DELETE = 101
 
     private var appList = arrayListOf<Appointment>()
     private var mService: DeserializeService? = null
@@ -30,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         ListAdapter(this@MainActivity, arrayListOf())
     }
 
-    fun filteredDates(localData : ArrayList<Appointment>) : ArrayList<Appointment>{
+    private fun filteredDates(localData : ArrayList<Appointment>) : ArrayList<Appointment>{
         val filteredData : ArrayList<Appointment> = arrayListOf()
         for (element in localData) {
             if (selectedDate.get(Calendar.YEAR) == element.myCalendar.get(Calendar.YEAR) &&
@@ -56,8 +61,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         addBtn.setOnClickListener {_ ->
-                val intent = Intent(this@MainActivity, AddtActivity::class.java)
-                startActivityForResult(intent, REQUEST_ADD)
+            val intent = Intent(this@MainActivity, AddtActivity::class.java)
+            startActivityForResult(intent, REQUEST_ADD)
         }
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -67,7 +72,17 @@ class MainActivity : AppCompatActivity() {
             updateAdapter()
         }
 
-        val intent = Intent(this@MainActivity, DeserializeService::class.java)
+        list.setOnItemClickListener { parent: AdapterView<*>?, _, position: Int, _ ->
+            val item = parent!!.getItemAtPosition(position) as Appointment
+            val index : Int = appList.indexOf(item)
+            val intentDetails = Intent(this@MainActivity, DetailsActivity::class.java)
+            intentDetails.putExtra("element", item)
+            intentDetails.putExtra("index", index)
+            startActivityForResult(intentDetails, REQUEST_UPDATE_OR_DELETE)
+        }
+
+
+    val intent = Intent(this@MainActivity, DeserializeService::class.java)
         startService(intent)
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE)
 
@@ -91,8 +106,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_ADD) {
-            appList.add(data!!.extras.get("Record") as Appointment)
+        when (requestCode){
+            REQUEST_ADD -> appList.add(data!!.extras.get("Record") as Appointment)
+            REQUEST_UPDATE_OR_DELETE -> {
+                val position = data!!.getIntExtra("index", -1)
+                when(resultCode) {
+                    CODE_UPDATE -> {
+                        val item = data!!.extras.get("item") as Appointment
+                        appList[position] = item
+                    }
+                    CODE_DELETE -> {
+                        appList.removeAt(position)
+                        updateAdapter()
+                    }
+                }
+            }
         }
     }
 
@@ -131,5 +159,5 @@ class MainActivity : AppCompatActivity() {
             mBound = false
         }
 
-        }
     }
+}
