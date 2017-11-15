@@ -27,6 +27,7 @@ class AddtActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addt)
 
+        addBtn.text = "Add"
         val myCalendar = Calendar.getInstance()
         val datePicker = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             myCalendar.set(Calendar.YEAR, year)
@@ -43,6 +44,7 @@ class AddtActivity : AppCompatActivity() {
         val timePicker = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
             myCalendar.set(Calendar.MINUTE, minute)
+            myCalendar.set(Calendar.SECOND, 0)
             updateTime(myCalendar)
         }
         timeField.setOnClickListener{_ ->
@@ -52,7 +54,7 @@ class AddtActivity : AppCompatActivity() {
         addBtn.setOnClickListener{_ ->
             val appointment = Appointment(myCalendar, editText.text.toString())
             val intent = Intent()
-            intent.putExtra("Record", appointment)
+            intent.putExtra("item", appointment)
             setResult(REQUEST_ADD, intent)
             finish()
         }

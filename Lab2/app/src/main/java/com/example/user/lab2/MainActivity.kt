@@ -92,10 +92,16 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun updateAdapter() {
+    private fun updateAdapter() {
         listAdapter.clear()
         listAdapter.addAll(filteredDates(appList))
         listAdapter.notifyDataSetChanged()
+    }
+
+    private fun saveData() {
+        val serviceIntent = Intent(this@MainActivity, SerializeService::class.java)
+        serviceIntent.putExtra("data", appList)
+        startService(serviceIntent)
     }
 
     override fun onResume() {
@@ -107,8 +113,9 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             REQUEST_ADD -> {
-                val item = data!!.extras.get("Record") as Appointment
+                val item = data!!.extras.get("item") as Appointment
                 appList.add(item)
+
                 val serviceIntent = Intent(this@MainActivity, AlarmService::class.java)
                 serviceIntent.putExtra("request", REQUEST_ALARM_ADD)
                 serviceIntent.putExtra("item", item)
@@ -116,16 +123,33 @@ class MainActivity : AppCompatActivity() {
             }
             CODE_UPDATE -> {
                 val position = data!!.getIntExtra("index", -1)
-                val item = data!!.extras.get("item") as Appointment
+                val item = data.extras.get("item") as Appointment
+
+                val deleteOldAlarmIntent = Intent(this@MainActivity, AlarmService::class.java)
+                deleteOldAlarmIntent.putExtra("request", REQUEST_ALARM_REMOVE)
+                deleteOldAlarmIntent.putExtra("item", appList[position])
+                startService(deleteOldAlarmIntent)
+
+                val addNewAlarmIntent = Intent(this@MainActivity, AlarmService::class.java)
+                addNewAlarmIntent.putExtra("request", REQUEST_ALARM_ADD)
+                addNewAlarmIntent.putExtra("item", item)
+                startService(addNewAlarmIntent)
+
                 appList[position] = item
-                updateAdapter()
             }
             CODE_DELETE -> {
                 val position = data!!.getIntExtra("index", -1)
+
+                val deleteAlarmIntent = Intent(this@MainActivity, AlarmService::class.java)
+                deleteAlarmIntent.putExtra("request", REQUEST_ALARM_REMOVE)
+                deleteAlarmIntent.putExtra("item", appList[position])
+                startService(deleteAlarmIntent)
+
                 appList.removeAt(position)
-                updateAdapter()
             }
         }
+        saveData()
+        updateAdapter()
     }
 
     override fun onStop() {
@@ -134,9 +158,6 @@ class MainActivity : AppCompatActivity() {
             unbindService(mConnection)
             mBound = false
         }
-        val serviceIntent = Intent(this@MainActivity, SerializeService::class.java)
-        serviceIntent.putExtra("data", appList)
-        startService(serviceIntent)
     }
 
     override fun onDestroy() {

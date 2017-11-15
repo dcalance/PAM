@@ -18,6 +18,7 @@ import java.util.*
 class UpdateActivity : AppCompatActivity() {
 
     private val REQUEST_EDIT = 5
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addt)
@@ -39,6 +40,7 @@ class UpdateActivity : AppCompatActivity() {
         val timePicker = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             item.myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
             item.myCalendar.set(Calendar.MINUTE, minute)
+            item.myCalendar.set(Calendar.SECOND, 0)
             updateTime(item.myCalendar)
         }
         timeField.setOnClickListener{_ ->
