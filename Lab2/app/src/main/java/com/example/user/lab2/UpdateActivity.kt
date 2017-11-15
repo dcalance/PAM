@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_addt.*
+import kotlinx.android.synthetic.main.activity_details.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,9 +21,8 @@ class UpdateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addt)
-        //addBtn.text = "Update"
 
-        val item = intent.getSerializableExtra("element") as Appointment
+        val item = intent.getSerializableExtra("item") as Appointment
 
         val datePicker = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             item.myCalendar.set(Calendar.YEAR, year)
@@ -52,7 +52,22 @@ class UpdateActivity : AppCompatActivity() {
             setResult(REQUEST_EDIT, intent)
             finish()
         }
+
+        val dateFormat = SimpleDateFormat("MM/dd/yy", Locale.US)
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.US)
+
+        addBtn.text = "Update"
+        timeField.setText(timeFormat.format(item.myCalendar.time))
+        dateField.setText(dateFormat.format(item.myCalendar.time))
+        editText.setText(item.text)
     }
+
+    override fun onStart() {
+        super.onStart()
+        setResult(-1)
+    }
+
+
 
     private fun updateDate(myCalendar : Calendar) {
         val myFormat = "MM/dd/yy"

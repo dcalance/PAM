@@ -63,9 +63,15 @@ class AddtActivity : AppCompatActivity() {
         dateField.setText(sdf.format(myCalendar.time))
     }
     private fun updateTime(myCalendar: Calendar){
-        val myFormat = "HH:mm a"
+        val myFormat = "hh:mm a"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         timeField.setText(sdf.format(myCalendar.time))
+    }
+
+    override fun onBackPressed() {
+        setResult(-1)
+        finish()
+        super.onBackPressed()
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {

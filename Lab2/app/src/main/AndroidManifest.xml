@@ -20,9 +20,11 @@
         </provider>
 
         <activity android:name=".MainActivity">
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.SEARCH" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +38,7 @@
             android:name=".DeserializeService"
             android:exported="false" />
 
-        <activity android:name=".DetailsActivity"></activity>
+        <activity android:name=".DetailsActivity" />
     </application>
 
 </manifest>

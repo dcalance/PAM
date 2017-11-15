@@ -1,6 +1,5 @@
 package com.example.user.lab2
 
-import android.app.PendingIntent.getActivity
 import android.content.ComponentName
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
@@ -14,10 +13,11 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import kotlin.collections.ArrayList
-
 import java.util.*
+import android.app.SearchManager
+import android.widget.SearchView
+import java.text.SimpleDateFormat
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,12 +52,13 @@ class MainActivity : AppCompatActivity() {
         calendarView.visibility = View.INVISIBLE
 
         calendarBtn.setOnClickListener{_ ->
-                val slideUp : Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_up)
-                val slideDown = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_down)
-                when(calendarView.visibility){
-                    View.VISIBLE -> {calendarView.startAnimation(slideDown); calendarView.visibility = View.GONE;}
-                    else -> {calendarView.startAnimation(slideUp); calendarView.visibility = View.VISIBLE; }
+            val slideUp : Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_up)
+            val slideDown = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_down)
+            when(calendarView.visibility){
+                View.VISIBLE -> {calendarView.startAnimation(slideDown); calendarView.visibility = View.GONE;}
+                else -> {calendarView.startAnimation(slideUp); calendarView.visibility = View.VISIBLE; }
             }
+
         }
 
         addBtn.setOnClickListener {_ ->
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             val item = parent!!.getItemAtPosition(position) as Appointment
             val index : Int = appList.indexOf(item)
             val intentDetails = Intent(this@MainActivity, DetailsActivity::class.java)
-            intentDetails.putExtra("element", item)
+            intentDetails.putExtra("item", item)
             intentDetails.putExtra("index", index)
             startActivityForResult(intentDetails, REQUEST_UPDATE_OR_DELETE)
         }
@@ -96,30 +97,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateAdapter()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        updateAdapter()
+            updateAdapter()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode){
+        when (resultCode) {
             REQUEST_ADD -> appList.add(data!!.extras.get("Record") as Appointment)
-            REQUEST_UPDATE_OR_DELETE -> {
+            CODE_UPDATE -> {
                 val position = data!!.getIntExtra("index", -1)
-                when(resultCode) {
-                    CODE_UPDATE -> {
-                        val item = data!!.extras.get("item") as Appointment
-                        appList[position] = item
-                    }
-                    CODE_DELETE -> {
-                        appList.removeAt(position)
-                        updateAdapter()
-                    }
-                }
+                val item = data!!.extras.get("item") as Appointment
+                appList[position] = item
+                updateAdapter()
+            }
+            CODE_DELETE -> {
+                val position = data!!.getIntExtra("index", -1)
+                appList.removeAt(position)
+                updateAdapter()
             }
         }
     }
@@ -130,6 +124,9 @@ class MainActivity : AppCompatActivity() {
             unbindService(mConnection)
             mBound = false
         }
+        val serviceIntent = Intent(this@MainActivity, SerializeService::class.java)
+        serviceIntent.putExtra("data", appList)
+        startService(serviceIntent)
     }
 
     override fun onDestroy() {
@@ -140,8 +137,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_search, menu)
-        return super.onCreateOptionsMenu(menu)
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_search, menu)
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchMenuItem = menu!!.findItem(R.id.action_search)
+        val searchView = searchMenuItem.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.isSubmitButtonEnabled = true
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchForResults(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+
+        return true
+    }
+
+    private fun searchForResults(query : String) {
+        val splitQuery = query.split(' ')
+        val resultList : ArrayList<Appointment> = arrayListOf()
+        for (element in appList) {
+            val sb = StringBuilder()
+            val dateFormat = SimpleDateFormat("MM/dd/yy", Locale.US)
+            val timeFormat = SimpleDateFormat("hh:mm a", Locale.US)
+            sb.append(timeFormat.format(element.myCalendar.time) + " ")
+            sb.append(dateFormat.format(element.myCalendar.time) + " ")
+            sb.append(element.text)
+            for (spElement in splitQuery) {
+                if (sb.toString().toLowerCase().contains(spElement.toLowerCase())) {
+                    resultList.add(element)
+                    continue
+                }
+            }
+        }
+
+        listAdapter.clear()
+        listAdapter.addAll(resultList)
+        listAdapter.notifyDataSetChanged()
     }
 
     private val mConnection : ServiceConnection = object : ServiceConnection {

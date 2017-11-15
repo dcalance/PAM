@@ -15,12 +15,15 @@ class DetailsActivity : AppCompatActivity() {
     private val CODE_DELETE = 101
     private val REQUEST_EDIT = 5
 
+    private val position by lazy {intent.getIntExtra("index", -1)}
+    private lateinit var item : Appointment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        val position = intent.getIntExtra("index", -1)
-        val item = intent.getSerializableExtra("element") as Appointment
+        item = intent.getSerializableExtra("item") as Appointment
+
         editBtn.setOnClickListener{ _ ->
             setResult(CODE_UPDATE, intent)
             val intentUpdate = Intent(this@DetailsActivity, UpdateActivity::class.java)
@@ -29,29 +32,31 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         removeBtn.setOnClickListener{ _ ->
-            val intent = Intent()
-            intent.putExtra("index", position)
-            setResult(CODE_DELETE, intent)
+            val intentDelete = Intent()
+            intentDelete.putExtra("index", position)
+            setResult(CODE_DELETE, intentDelete)
             finish()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_EDIT) {
-            val item = data!!.getSerializableExtra("item") as Appointment
-            val position = intent.getIntExtra("index", -1)
-            val intent = Intent()
-            intent.putExtra("item", item)
-            intent.putExtra("index", position)
-            setResult(CODE_UPDATE)
-            finish()
+        if (resultCode == REQUEST_EDIT) {
+            item = data!!.getSerializableExtra("item") as Appointment
         }
+    }
+
+    override fun onBackPressed() {
+        val intentUpdate = Intent()
+        intentUpdate.putExtra("item", item)
+        intentUpdate.putExtra("index", position)
+        setResult(CODE_UPDATE, intentUpdate)
+        finish()
+        super.onBackPressed()
     }
 
     override fun onStart() {
         super.onStart()
-        val item = intent.getSerializableExtra("element") as Appointment
         val dateFormat = SimpleDateFormat("MM/dd/yy", Locale.US)
         val timeFormat = SimpleDateFormat("HH:mm a", Locale.US)
         timeText.text = timeFormat.format(item.myCalendar.time)
