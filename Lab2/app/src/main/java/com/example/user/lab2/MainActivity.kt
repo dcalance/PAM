@@ -27,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     private val CODE_UPDATE = 100
     private val CODE_DELETE = 101
 
+    private val REQUEST_ALARM_ADD = 200
+    private val REQUEST_ALARM_REMOVE = 201
+
     private var appList = arrayListOf<Appointment>()
     private var mService: DeserializeService? = null
     private var mBound = false
@@ -103,7 +106,14 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
-            REQUEST_ADD -> appList.add(data!!.extras.get("Record") as Appointment)
+            REQUEST_ADD -> {
+                val item = data!!.extras.get("Record") as Appointment
+                appList.add(item)
+                val serviceIntent = Intent(this@MainActivity, AlarmService::class.java)
+                serviceIntent.putExtra("request", REQUEST_ALARM_ADD)
+                serviceIntent.putExtra("item", item)
+                startService(serviceIntent)
+            }
             CODE_UPDATE -> {
                 val position = data!!.getIntExtra("index", -1)
                 val item = data!!.extras.get("item") as Appointment
@@ -189,7 +199,7 @@ class MainActivity : AppCompatActivity() {
             val binder = service as DeserializeService.LocalBinder
             mService = binder.getService()
             mBound = true
-            appList = ArrayList(mService!!.result.asList())
+            appList = ArrayList(mService!!.getResult().asList())
             list.adapter = listAdapter
             updateAdapter()
         }
