@@ -28,15 +28,9 @@ class RssListFragment : Fragment() {
         mainActivity.rssInfoAdapter.notifyDataSetChanged()
         addBtn.setOnClickListener {_ ->
             val intent = Intent(activity, AddRssActivity::class.java)
-            val mainActivity = activity as MainActivity
             intent.putExtra("request", mainActivity.REQUEST_ADD_RSS)
 
             startActivityForResult(intent, mainActivity.REQUEST_ADD_RSS)
-        }
-        listRss.setOnItemClickListener { _, _, _, _ ->
-            val intent = Intent(activity, DisplayRssActivity::class.java)
-            intent.putExtra("link", "aa")
-            startActivity(intent)
         }
         registerForContextMenu(listRss)
     }

@@ -15,7 +15,17 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FeedParser {
+class FeedParser { //The Atom Syndication Format Feed https://tools.ietf.org/html/rfc4287
+    companion object {
+
+        private val TAG_ID : String = "id"
+        private val TAG_TITLE : String = "title"
+        private val TAG_PUBLISHED : String = "updated"
+        private val TAG_LINK : String = "link"
+        private val TAG_AUTHOR : String = "name"
+        private val TAG_SUMMARY : String = "summary"
+
+    }
 
     @Throws(XmlPullParserException::class, IOException::class, ParseException::class)
     fun parse(`in`: InputStream): ArrayList<Entry> {
@@ -59,11 +69,14 @@ class FeedParser {
         while (tag != "entry" || parser.eventType != XmlPullParser.END_TAG) {
             when (tag) {
                 TAG_ID -> id = parser.nextText()
-                TAG_TITLE -> title = parser.nextText()
-                TAG_LINK -> {
-                    link = parser.getAttributeValue(null,"href")
+                TAG_TITLE -> title = parser.nextText().replace("\n", "")
+                TAG_LINK -> link = parser.getAttributeValue(null, "href")
+                TAG_PUBLISHED -> {
+                    val formatIn = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+                    val formatOut = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US)
+                    val parsedDate = formatIn.parse(parser.nextText())
+                    published = formatOut.format(parsedDate)
                 }
-                TAG_PUBLISHED -> published = parser.nextText()
                 TAG_AUTHOR -> author = parser.nextText()
                 TAG_SUMMARY -> summary = parser.nextText().replace("\n", "")
             }
@@ -74,15 +87,4 @@ class FeedParser {
     }
 
     class Entry internal constructor(val id : String, val title : String, val link : String, val published : String, val author : String, val summary : String)
-
-    companion object {
-
-        private val TAG_ID = "id"
-        private val TAG_TITLE = "title"
-        private val TAG_PUBLISHED = "link"
-        private val TAG_LINK = "updated"
-        private val TAG_AUTHOR = "name"
-        private val TAG_SUMMARY = "summary"
-
-    }
 }

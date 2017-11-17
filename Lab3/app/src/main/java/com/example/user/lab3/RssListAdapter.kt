@@ -2,6 +2,7 @@ package com.example.user.lab3
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,11 @@ class RssListAdapter(private val lContext: Activity, rssInfo : ArrayList<RssInfo
             else {
                 convertView
             }
+        vi.setOnClickListener{ _->
+            val intent = Intent(lContext, DisplayRssActivity::class.java)
+            intent.putExtra("link", currentElement.link)
+            lContext.startActivity(intent)
+        }
         val holder = Holder(vi.title, vi.link)
 
         holder.title.text = currentElement.title
