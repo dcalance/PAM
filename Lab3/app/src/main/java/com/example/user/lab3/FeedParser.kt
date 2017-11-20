@@ -66,19 +66,21 @@ class FeedParser { //The Atom Syndication Format Feed https://tools.ietf.org/htm
         var published : String? = null
         var summary : String? = null
 
-        while (tag != "entry" || parser.eventType != XmlPullParser.END_TAG) {
-            when (tag) {
-                TAG_ID -> id = parser.nextText()
-                TAG_TITLE -> title = parser.nextText().replace("\n", "")
-                TAG_LINK -> link = parser.getAttributeValue(null, "href")
-                TAG_PUBLISHED -> {
-                    val formatIn = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-                    val formatOut = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US)
-                    val parsedDate = formatIn.parse(parser.nextText())
-                    published = formatOut.format(parsedDate)
+        while ((tag != "entry" || parser.eventType != XmlPullParser.END_TAG)) {
+            if (parser.eventType == XmlPullParser.START_TAG) {
+                when (tag) {
+                    TAG_ID -> id = parser.nextText()
+                    TAG_TITLE -> title = parser.nextText().replace("\n", "")
+                    TAG_LINK -> link = parser.getAttributeValue(null, "href")
+                    TAG_PUBLISHED -> {
+                        val formatIn = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+                        val formatOut = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US)
+                        val parsedDate = formatIn.parse(parser.nextText())
+                        published = formatOut.format(parsedDate)
+                    }
+                    TAG_AUTHOR -> author = parser.nextText()
+                    TAG_SUMMARY -> summary = parser.nextText().replace("\n", "")
                 }
-                TAG_AUTHOR -> author = parser.nextText()
-                TAG_SUMMARY -> summary = parser.nextText().replace("\n", "")
             }
             parser.next()
             tag = parser.name

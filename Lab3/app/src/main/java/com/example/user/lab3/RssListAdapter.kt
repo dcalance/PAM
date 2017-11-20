@@ -24,11 +24,6 @@ class RssListAdapter(private val lContext: Activity, rssInfo : ArrayList<RssInfo
             else {
                 convertView
             }
-        vi.setOnClickListener{ _->
-            val intent = Intent(lContext, DisplayRssActivity::class.java)
-            intent.putExtra("link", currentElement.link)
-            lContext.startActivity(intent)
-        }
         val holder = Holder(vi.title, vi.link)
 
         holder.title.text = currentElement.title

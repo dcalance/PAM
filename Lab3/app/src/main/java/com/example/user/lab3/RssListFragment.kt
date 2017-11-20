@@ -32,12 +32,18 @@ class RssListFragment : Fragment() {
 
             startActivityForResult(intent, mainActivity.REQUEST_ADD_RSS)
         }
+        listRss.setOnItemClickListener{ parent, _, position, _ ->
+            val currentElement = parent.adapter.getItem(position) as RssInfo
+            val intent = Intent(activity, DisplayRssActivity::class.java)
+            intent.putExtra("link", currentElement.link)
+            startActivity(intent)
+        }
         registerForContextMenu(listRss)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        if (v.id === R.id.listRss) {
+        if (v.id == R.id.listRss) {
             val inflater = activity.menuInflater
             inflater.inflate(R.menu.menu_list, menu)
         }

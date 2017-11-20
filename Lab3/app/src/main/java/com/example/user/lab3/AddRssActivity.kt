@@ -1,11 +1,13 @@
 package com.example.user.lab3
 
 import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
+import android.webkit.URLUtil
 import kotlinx.android.synthetic.main.activity_add_rss.*
 
 class AddRssActivity : AppCompatActivity() {
@@ -36,6 +38,11 @@ class AddRssActivity : AppCompatActivity() {
 
             if (!emptyFields) {
                 val intentResult = Intent()
+                val builder = Uri.Builder()
+                if (!URLUtil.isValidUrl(linkBox.text.toString())) {
+                    builder.scheme("http").authority(linkBox.text.toString())
+                    linkBox.setText(builder.build().toString())
+                }
                 when(requestCode) {
                     REQUEST_ADD_RSS -> {
                         val result = RssInfo(0, titleBox.text.toString(), linkBox.text.toString())
