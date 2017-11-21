@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.android.basicsyncadapter.net.FeedParser
 import kotlinx.android.synthetic.main.rss_feed_list_layout.view.*
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +25,7 @@ class RssFeedListAdapter(private val lContext: Activity, rssEntries : ArrayList<
                     else {
                         convertView
                     }
-            val holder = Holder(vi.titleText, vi.summaryText, vi.dateText)
+            val holder = Holder(vi.titleText, vi.summaryText, vi.dateText, vi.authorText)
             val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US)
             val parsedDate = dateFormat.parse(currentElement.published)
             val calendar = Calendar.getInstance()
@@ -44,6 +45,8 @@ class RssFeedListAdapter(private val lContext: Activity, rssEntries : ArrayList<
             holder.date.text = dateString
             holder.title.text = currentElement.title
             holder.link.text = currentElement.summary
+            holder.author.text = currentElement.author
+
             vi.setOnClickListener{ _ ->
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(currentElement.link))
                 lContext.startActivity(browserIntent)
@@ -51,5 +54,5 @@ class RssFeedListAdapter(private val lContext: Activity, rssEntries : ArrayList<
             return vi
         }
 
-        data class Holder(val title : TextView, val link : TextView, val date : TextView)
+        data class Holder(val title : TextView, val link : TextView, val date : TextView, val author : TextView)
 }
