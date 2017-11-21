@@ -14,13 +14,10 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-
-
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
     </WebView>
 
@@ -43,10 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="828dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginLeft="96dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/captchaImage" />
+        app:layout_constraintStart_toStartOf="@+id/captchaImage" />
 
     <EditText
         android:id="@+id/fromText"
@@ -78,14 +77,17 @@
 
     <EditText
         android:id="@+id/captchaText"
-        android:layout_width="189dp"
-        android:layout_height="25dp"
+        android:layout_width="81dp"
+        android:layout_height="22dp"
         android:layout_above="@+id/sentBtn"
         android:layout_alignEnd="@+id/messageText"
         android:layout_alignRight="@+id/messageText"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/edit_text_background"
         android:ems="10"
+        android:maxLength="5"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="@+id/messageText"
         app:layout_constraintTop_toBottomOf="@+id/messageText" />
@@ -93,11 +95,14 @@
     <ImageView
         android:id="@+id/captchaImage"
         android:layout_width="125dp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_alignBottom="@+id/captchaText"
         android:layout_alignLeft="@+id/messageText"
         android:layout_alignStart="@+id/messageText"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
         android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
         android:src="@drawable/ic_dialog_close_light"
         app:layout_constraintStart_toStartOf="@+id/messageText"
         app:layout_constraintTop_toBottomOf="@+id/messageText" />
@@ -140,14 +145,15 @@
         app:layout_constraintEnd_toStartOf="@+id/charLeft" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/topImage"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/webView"
         android:layout_marginBottom="12dp"
-        android:src="@drawable/ic_audiotrack_light"
+        android:background="@android:color/holo_blue_dark"
+        android:src="@drawable/edit_text_background"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintStart_toStartOf="@+id/textView4" />
 
@@ -159,12 +165,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="68dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/edit_text_background"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:textAlignment="viewStart"
+        android:gravity="top|left"
+        android:inputType="textNoSuggestions"
         app:layout_constraintBottom_toTopOf="@+id/sentBtn"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Orange Text"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/topImage"
+        app:layout_constraintStart_toStartOf="@+id/textView4" />
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

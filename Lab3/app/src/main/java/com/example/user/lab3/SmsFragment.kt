@@ -18,6 +18,7 @@ import android.text.TextWatcher
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.util.Log
+import android.webkit.WebResourceError
 import android.widget.ImageView
 import com.example.user.lab3.R.id.webView
 import com.example.user.lab3.R.id.webView
@@ -39,32 +40,29 @@ class SmsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        webView.addJavascriptInterface(WebAppInterface(activity, charLeft, captchaImage), "Android")
+        webView.addJavascriptInterface(WebAppInterface(activity, charLeft, captchaImage, topImage), "Android")
 
         webView.webViewClient = object : WebViewClient() {
-            private var running = 0 // Could be public if you want a timer to check.
-
-            override fun shouldOverrideUrlLoading(webView: WebView?, urlNewString: WebResourceRequest?): Boolean {
-                running++
-                webView!!.loadUrl(urlNewString.toString())
-                return true
-            }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                running = Math.max(running, 1) // First request move it to 1.
+
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                if (--running == 0) { // just "running--;" if you add a timer.
                     webView.loadUrl("javascript: (function() {Android.setCharsLeft(document.getElementById('rest').value);}) ();")
                     webView.loadUrl("javascript: (function() {Android.setCaptchaImage(document.getElementsByClassName(\"col-lg-8 col-md-9 col-xs-12\")[0].getElementsByTagName('img')[0].src);}) ();")
-                }
+
+            }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                Log.d("Error webview", error.toString())
             }
         }
         webView.loadUrl("https://orangetext.md/")
         val webSettings = webView.settings
         webSettings.javaScriptEnabled = true
-        webSettings.domStorageEnabled = true
+        //webSettings.domStorageEnabled = true
 
         charLeft.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -80,9 +78,45 @@ class SmsFragment : Fragment() {
             }
         })
 
+        messageText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p2 < p3) {
+                    val left = charLeft.text.toString().toInt() - 1
+                    charLeft.text = left.toString()
+                } else {
+                    val left = charLeft.text.toString().toInt() + 1
+                    charLeft.text = left.toString()
+                }
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
+
         sentBtn.setOnClickListener { _ ->
-            webView.loadUrl("javascript: (function() {document.getElementById('From').value= 'test';}) ();")
-            webView.loadUrl("javascript: (function() {document.getElementById('Msisdn').value= 'test';}) ();")
+            webView.loadUrl("javascript: (function() {Android.setCaptchaImage(document.getElementsByClassName(\"col-lg-8 col-md-9 col-xs-12\")[0].getElementsByTagName('img')[0].src);}) ();")
+            val setFrom = "document.getElementById('From').value= '${fromText.text}';"
+            val setTo = "document.getElementById('Msisdn').value= '${toText.text}';"
+            val setMessage = "document.getElementById('Message').value= '${messageText.text}';"
+            val setCaptcha = "document.getElementById('Captcha').value= '${captchaText.text}';"
+            //val clickButton = "document.getElementById('btnOK').click();"
+            //val printError = "Android.showToast(document.getElementById('ws_errors').innerHTML);"
+            webView.visibility = View.VISIBLE
+            //captchaImage.visibility = View.GONE
+
+            //webView.loadUrl("javascript: (function() { $setFrom $setTo $setMessage $setCaptcha }) ();")
+
+//            webView.loadUrl("javascript: (function() {document.getElementById('From').value= '${fromText.text}';}) ();")
+//            webView.loadUrl("javascript: (function() {document.getElementById('Msisdn').value= '${toText.text}';}) ();")
+//            webView.loadUrl("javascript: (function() {document.getElementById('Message').value= '${messageText.text}';}) ();")
+//            webView.loadUrl("javascript: (function() {document.getElementById('Captcha').value= '${captchaText.text}';}) ();")
+//            webView.loadUrl("javascript: (function() {document.getElementById('btnOK').click();}) ();")
+//            webView.loadUrl("javascript: (function() {Android.showToast(document.getElementsByClass('ws_errors')[0].textContent);}) ();")
         }
     }
 

@@ -12,7 +12,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_sms.*
 
 
-class WebAppInterface(private val mContext : Context, private val charsText : TextView, private val captchaImage : ImageView) {
+class WebAppInterface(private val mContext : Context, private val charsText : TextView, private val captchaImage : ImageView, private val topImage : ImageView) {
     companion object {
         var url = ""
     }
@@ -27,7 +27,11 @@ class WebAppInterface(private val mContext : Context, private val charsText : Te
     @JavascriptInterface
     fun setCaptchaImage(chars : String) {
         val downloadImageTask = DownloadImageTask(captchaImage)
-        val url = chars
+        downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, chars)
+    }
+    @JavascriptInterface
+    fun setTopImage(url : String) {
+        val downloadImageTask = DownloadImageTask(topImage)
         downloadImageTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url)
     }
     private inner class DownloadImageTask(internal var bmImage: ImageView) : AsyncTask<String, Void, Bitmap>() {
