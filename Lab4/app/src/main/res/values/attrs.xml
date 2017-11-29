@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CustomProgressBar">
-        <attr name="barHeight" format="dimension"/>
+        <attr name="progressDrawable" format="integer"/>
+        <attr name="percentageColor" format="integer"/>
+        <attr name="percentageSize" format="dimension"/>
+        <attr name="progressBarColor" format="integer"/>
+        <attr name="progressBarSize" format="dimension"/>
+        <attr name="showProgressBar" format="boolean"/>
+        <attr name="showPercentage" format="boolean"/>
+        <attr name="backgroundColor" format="integer"/>
+        <attr name="showBackground" format="boolean"/>
     </declare-styleable>
 </resources>

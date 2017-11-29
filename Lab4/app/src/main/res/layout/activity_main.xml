@@ -19,10 +19,11 @@
     <com.example.user.lab4.CustomProgressBar
         android:id="@+id/progressBar"
         style="?android:progressBarStyleHorizontal"
-        app:barHeight="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="96dp"
+        app:progressDrawable='@drawable/progress_bar_drawable'
+        app:barHeight="4dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent" />
 
