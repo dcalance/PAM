@@ -13,7 +13,7 @@ import android.view.animation.DecelerateInterpolator
 class CustomProgressBar(context : Context, attrs : AttributeSet) : View(context, attrs){
 
     //private var barHeight: Float = 0.toFloat()
-    private val defaultHeight : Int
+    private val defaultHeight = 20
     private val defaultWidth = 100
     //private val progressDrawable : LayerDrawable
 
@@ -22,17 +22,7 @@ class CustomProgressBar(context : Context, attrs : AttributeSet) : View(context,
         field = value
         invalidate()
     }
-    var percentageSize = 0f
-    set(value) {
-        field = value
-        invalidate()
-    }
     var progressBarColor = Color.BLUE
-    set(value) {
-        field = value
-        invalidate()
-    }
-    var progressBarSize = 0f
     set(value) {
         field = value
         invalidate()
@@ -60,7 +50,12 @@ class CustomProgressBar(context : Context, attrs : AttributeSet) : View(context,
 
     private var progress = 0f
     set(value) {
-        field = value
+        field =
+                if (value > 100) {
+                    100f
+                } else {
+                    value
+                }
         invalidate()
     }
 
@@ -89,19 +84,12 @@ class CustomProgressBar(context : Context, attrs : AttributeSet) : View(context,
         try {
 //            progressDrawable = typedArray.getDrawable(R.styleable.CustomProgressBar_progressDrawable) as LayerDrawable
             percentageColor = typedArray.getColor(R.styleable.CustomProgressBar_percentageColor, Color.BLACK)
-            percentageSize = typedArray.getDimension(R.styleable.CustomProgressBar_percentageSize, 20f)
             progressBarColor = typedArray.getColor(R.styleable.CustomProgressBar_progressBarColor, Color.BLUE)
-            progressBarSize = typedArray.getDimension(R.styleable.CustomProgressBar_progressBarSize, 20f)
             showProgressBar = typedArray.getBoolean(R.styleable.CustomProgressBar_showProgressBar, true)
             showPercentage = typedArray.getBoolean(R.styleable.CustomProgressBar_showPercentage, true)
             backgroundColor1 = typedArray.getColor(R.styleable.CustomProgressBar_backgroundColor, Color.GRAY)
             showBackground = typedArray.getBoolean(R.styleable.CustomProgressBar_showBackground, true)
 
-            defaultHeight =
-                    if(percentageSize > progressBarSize && showPercentage && showProgressBar)
-                        percentageSize.toInt()
-                    else
-                        progressBarSize.toInt()
         }
         finally {
             typedArray.recycle()
@@ -138,24 +126,30 @@ class CustomProgressBar(context : Context, attrs : AttributeSet) : View(context,
     private val paint = Paint()
 
     override fun onDraw(canvas: Canvas?) {
+        paint.textSize =
+                if(height > (width * 0.1f)) {
+                    width * 0.05f
+                } else {
+                    height.toFloat() * 0.5f
+                }
         if(showProgressBar) {
             paint.color = backgroundColor1
             if(showPercentage) {
-                canvas!!.drawRect(0f, progressBarSize, width.toFloat() * 0.85f, height.toFloat() / 2f, paint)
+                canvas!!.drawRect(0f, 0f, width.toFloat() * 0.85f, height.toFloat(), paint)
                 val progressWidth = width * (progress / 100) * 0.85f
                 paint.color = progressBarColor
-                canvas.drawRect(0f, progressBarSize, progressWidth, height.toFloat() / 2f, paint)
+                canvas.drawRect(0f, 0f, progressWidth, height.toFloat(), paint)
                 paint.color = percentageColor
-                paint.textSize = percentageSize
-                canvas.drawText("${progress.toInt()}%", width.toFloat() - width.toFloat() * 0.10f, height.toFloat(), paint)
+                canvas.drawText("${progress.toInt()}%", width.toFloat() * 0.9f, height.toFloat() / 2 - ((paint.descent() + paint.ascent()) / 2), paint)
             } else {
-                canvas!!.drawRect(width.toFloat() * 0.075f, progressBarSize, width.toFloat() * 0.85f, height.toFloat() / 2f, paint)
+                canvas!!.drawRect(0f, 0f, width.toFloat(), height.toFloat() / 2f, paint)
                 val progressWidth = width * (progress / 100) * 0.85f
                 paint.color = progressBarColor
-                canvas.drawRect(width.toFloat() * 0.075f, progressBarSize, progressWidth, height.toFloat() / 2f, paint)
+                canvas.drawRect(0f, 0f, progressWidth, height.toFloat() / 2f, paint)
             }
         } else {
-
+            paint.color = percentageColor
+            canvas!!.drawText("${progress.toInt()}%", width.toFloat() / 2, height.toFloat() / 2, paint)
         }
     }
 }
