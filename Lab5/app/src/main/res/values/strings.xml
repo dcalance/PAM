@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Lab5</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="telemedicine">Telemedicine</string>
+    <string name="welcome">Welcome</string>
+    <string name="random_trash">Lorem ipsum dolor sit amet, conse ctetur adipiscing elit, t. Ut enim ad veni am, quis nostrud exercitation ullamco </string>
+    <string name="urgent">URGENT</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="register">Register</string>
+    <string name="full_name">Full Name</string>
+    <string name="your_full_name">Your Full Name</string>
+    <string name="birthday">Birthday</string>
+    <string name="date_format">dd/mm/yy</string>
+    <string name="your_email">Your Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="your_phone_number">Your Phone Number</string>
+    <string name="address">Location/Address</string>
+    <string name="your_location">Your Location</string>
+    <string name="next">Next</string>
+</resources>
