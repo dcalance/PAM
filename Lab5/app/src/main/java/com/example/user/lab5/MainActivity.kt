@@ -23,5 +23,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        urgentBtn.setOnClickListener{ _ ->
+            val intent = Intent(this@MainActivity, CoreActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -31,10 +31,11 @@
 
     <style name="inTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="colorPrimary">@color/Lime</item>
-        <item name="android:textColorPrimary">@color/White</item>
+        <item name="android:textColorPrimary">@android:color/background_dark</item>
         <item name="android:textColorPrimaryInverse">@color/Lime</item>
         <item name="android:textColorSecondary">@color/White</item>
         <item name="android:textColorSecondaryInverse">@color/Lime</item>
+        <item name="android:actionMenuTextColor">#000000</item>
     </style>
 
 </resources>
