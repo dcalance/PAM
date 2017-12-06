@@ -5,6 +5,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_core.*
+import android.R.attr.key
+import android.content.Intent
+import android.preference.PreferenceManager
+import android.content.SharedPreferences
+
+
 
 class CoreActivity : AppCompatActivity() {
 
@@ -17,11 +23,21 @@ class CoreActivity : AppCompatActivity() {
         homeBtn.setOnClickListener {
             viewPager.currentItem = 0
         }
+
+        val preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val token = preferences.getString("Token", null)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val id = item!!.itemId
-        if(id == 1) {
+        if(id == R.id.action_signout) {
+            val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            settings.edit().remove("Token").apply()
+
+            val intent = Intent(this@CoreActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
             return true
         }
         return super.onOptionsItemSelected(item)

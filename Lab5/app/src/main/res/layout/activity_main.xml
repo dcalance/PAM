@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/signUpBtn"
+        android:id="@+id/loginBtn"
         style="@style/CustomButton"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
@@ -34,15 +34,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/signUpBtn"
         style="@style/CustomButtonHollow"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/login"
         android:textColor="@color/White"
-        app:layout_constraintStart_toStartOf="@+id/signUpBtn"
-        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
+        app:layout_constraintStart_toStartOf="@+id/loginBtn"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
     <TextView
         android:id="@+id/textView2"
@@ -64,7 +64,7 @@
         android:layout_marginTop="32dp"
         android:background="@null"
         android:text="@string/urgent"
-        app:layout_constraintStart_toStartOf="@+id/loginBtn"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+        app:layout_constraintStart_toStartOf="@+id/signUpBtn"
+        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
 
 </android.support.constraint.ConstraintLayout>

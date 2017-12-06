@@ -16,10 +16,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import java.io.FileNotFoundException
 import android.util.Base64
-import android.R.attr.bitmap
-import android.os.AsyncTask
+import android.text.TextUtils
+import android.util.Log
+import android.widget.Toast
+import com.android.volley.*
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -30,6 +33,8 @@ class SignUpActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_top)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        var imageInput = false
 
         val myCalendar = Calendar.getInstance()
         val datePicker = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
@@ -44,6 +49,35 @@ class SignUpActivity : AppCompatActivity() {
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show()
         }
 
+
+        nameField.addTextChangedListener(object : TextWatcher {
+
+            override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {}
+            override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
+            override fun afterTextChanged(s : Editable)  {
+                if (s.length < 5) {
+                    nameField.error = "Name cannot be shorter than 5 characters."
+                } else if (s.length > 30) {
+                    nameField.error = "Name cannot be longer than 30 characters."
+                }
+            }
+        })
+
+        birthdayField.addTextChangedListener(object : TextWatcher {
+
+            override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {}
+            override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
+            override fun afterTextChanged(s : Editable)  {
+                if (TextUtils.isEmpty(s)) {
+                    birthdayField.error = "This field cannot be empty"
+                } else if(myCalendar.timeInMillis > System.currentTimeMillis()) {
+                    birthdayField.error = "Invalid birth date"
+                } else {
+                    birthdayField.error = null
+                }
+            }
+        })
+
         emailField.addTextChangedListener(object : TextWatcher {
 
             override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {}
@@ -55,46 +89,75 @@ class SignUpActivity : AppCompatActivity() {
             }
         })
 
+        val emptyRestrict = object : TextWatcher {
+
+            override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {}
+            override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
+            override fun afterTextChanged(s : Editable)  {
+                if (TextUtils.isEmpty(s)) {
+                    emailField.error = "This field cannot be empty"
+                }
+            }
+        }
+
+        phoneField.addTextChangedListener(emptyRestrict)
+        locationField.addTextChangedListener(emptyRestrict)
+
+
+
         inputImage.setOnClickListener{ _ ->
             val intent = Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            imageInput = true
             startActivityForResult(intent, 0)
         }
 
         nextBtn.setOnClickListener { _ ->
-            val sb = StringBuilder()
-//            sb.appendln("Content-Type:application/x-www-form-urlencoded")
-//            sb.appendln("FullName=${nameField.text}")
-//            val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-//            sb.appendln("Birthday=${sdf.format(myCalendar.time)}")
-//            sb.appendln("Email=${emailField.text}")
-//            sb.appendln("Phone=${phoneField.text}")
-//            sb.appendln("Address=${locationField.text}")
-//            sb.appendln("Username=${usernameField.text}")
-//            sb.appendln("Password=${passwordField.text}")
-            sb.append("FullName=Vasea&")
-            val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-            sb.append("Birthday=1996/02/02&")
-            sb.append("Email=mail@mail.com&")
-            sb.append("Phone=34932942394&")
-            sb.append("Address=str.Studentilor&")
-            sb.append("Username=vasean&")
-            sb.append("Password=123123&")
+            checkForEmptyFields()
 
-            val drawable = inputImage.drawable as BitmapDrawable
-            val bitmap = drawable.bitmap
+            val noErrorsOnFields = TextUtils.isEmpty(nameField.error)
+                    && TextUtils.isEmpty(birthdayField.error)
+                    && TextUtils.isEmpty(emailField.error)
+                    && TextUtils.isEmpty(phoneField.error)
+                    && TextUtils.isEmpty(locationField.error)
+            if (noErrorsOnFields) {
+                val drawable = inputImage.drawable as BitmapDrawable
+                val bitmap : Bitmap = if (imageInput) {
+                    drawable.bitmap
+                } else {
+                    BitmapFactory.decodeResource(resources, R.drawable.no_avatar)
+                }
 
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            val byteArray = byteArrayOutputStream.toByteArray()
-            val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+                val byteArray = byteArrayOutputStream.toByteArray()
+                val encodedImage : String = Base64.encodeToString(byteArray, Base64.NO_WRAP)
+                val format = SimpleDateFormat("yyyy/MM/dd", Locale.US)
 
-            sb.appendln("Base64Photo=$encoded")
+                val intentNext = Intent(this@SignUpActivity, SignUp2Activity::class.java)
+                intentNext.putExtra("name", nameField.text.toString())
+                intentNext.putExtra("birthday", format.format(myCalendar.time))
+                intentNext.putExtra("email", emailField.text.toString())
+                intentNext.putExtra("phone", phoneField.text.toString())
+                intentNext.putExtra("location", locationField.text.toString())
+                intentNext.putExtra("photo", encodedImage)
+                startActivity(intentNext)
+            } else {
+                Toast.makeText(this@SignUpActivity, "Please make sure you made no input mistakes.", Toast.LENGTH_SHORT).show()
+            }
 
-            val task = ApiHandler.CallRegisterApi()
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, sb.toString())
         }
     }
+
+    private fun checkForEmptyFields() {
+        val emptyFieldError = "This field cannot be empty"
+        if (TextUtils.isEmpty(nameField.text)) nameField.error = emptyFieldError
+        if (TextUtils.isEmpty(birthdayField.text)) birthdayField.error = emptyFieldError
+        if (TextUtils.isEmpty(emailField.text)) emailField.error = emptyFieldError
+        if (TextUtils.isEmpty(phoneField.text)) phoneField.error = emptyFieldError
+        if (TextUtils.isEmpty(locationField.text)) locationField.error = emptyFieldError
+    }
+
 
     private fun updateDate(myCalendar : Calendar) {
         val myFormat = "dd/MM/yyyy"

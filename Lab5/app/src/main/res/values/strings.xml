@@ -20,9 +20,7 @@
     <string name="your_location">Your Location</string>
     <string name="next">Next</string>
     <string name="notification">Notification</string>
-<<<<<<< HEAD
     <string name="username">Username</string>
-=======
     <string name="request_approved">Your Request Has Been Approved</string>
     <string name="request_details">Request Details</string>
     <string name="name">Name</string>
@@ -36,8 +34,9 @@
     <string name="rating">4.0</string>
     <string name="confirm_order">Confirm</string>
     <string name="cancel_request">Cancel Request</string>
->>>>>>> 9316adfc5b0afa6c02113dea9207069280ed40ac
-
+    <string name="confirm_password">Confirm Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_out">Sign Out</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

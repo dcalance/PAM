@@ -5,17 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".CoreActivity">
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
+        android:id="@+id/action_signout"
+        android:title="@string/sign_out"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_search"
-        android:title="Search"
-        app:showAsAction="never"
-        />
-    <item
-        android:id="@+id/action_user"
-        android:title="GG"
-        app:showAsAction="never"/>
 
 </menu>
