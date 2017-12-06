@@ -6,12 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.lab5.CoreActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/menu_bar" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_top"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="@color/Lime">
+        android:layout_height="wrap_content"
+        android:background="@color/Lime"
+        android:minHeight="?attr/actionBarSize">
 
 
         <TextView
@@ -29,24 +37,27 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/menu_bar" />
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_top">
+
+    </android.support.v4.view.ViewPager>
 
     <ImageButton
         android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/plus_icon" />
 
@@ -58,7 +69,7 @@
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="@+id/notificationBtn"
         app:layout_constraintEnd_toStartOf="@+id/notificationBtn"
-        app:srcCompat="@drawable/home_not_selected" />
+        app:srcCompat="@drawable/home_button" />
 
     <ImageButton
         android:id="@+id/notificationBtn"
@@ -68,17 +79,17 @@
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addBtn"
-        app:srcCompat="@drawable/notification_not_selected_new" />
+        app:srcCompat="@drawable/notifications_button" />
 
     <ImageButton
         android:id="@+id/scheduleBtn"
+        android:background="@null"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/notificationBtn"
         app:layout_constraintStart_toEndOf="@+id/addBtn"
-        app:srcCompat="@drawable/schedule_not_selected" />
+        app:srcCompat="@drawable/schedule_button" />
 
     <ImageButton
         android:id="@+id/profileBtn"
@@ -88,13 +99,6 @@
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="@+id/scheduleBtn"
         app:layout_constraintStart_toEndOf="@+id/scheduleBtn"
-        app:srcCompat="@drawable/profile_not_selected" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="368dp"
-        android:layout_height="434dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="64dp" />
+        app:srcCompat="@drawable/profile_button" />
 
 </android.support.constraint.ConstraintLayout>
