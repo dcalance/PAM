@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false">
@@ -38,11 +40,13 @@
 
     <com.example.user.lab5.RoundedImageView
         android:id="@+id/inputImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:src="@drawable/add_photo_img"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_top" />
 
@@ -66,8 +70,8 @@
         android:fontFamily="@font/nunito"
         android:text="@string/birthday"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/nameBox"
-        app:layout_constraintTop_toBottomOf="@+id/nameBox" />
+        app:layout_constraintStart_toStartOf="@+id/nameField"
+        app:layout_constraintTop_toBottomOf="@+id/nameField" />
 
     <TextView
         android:id="@+id/textView5"
@@ -77,8 +81,8 @@
         android:fontFamily="@font/nunito"
         android:text="@string/email"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/birthdayBox"
-        app:layout_constraintTop_toBottomOf="@+id/birthdayBox" />
+        app:layout_constraintStart_toStartOf="@+id/birthdayField"
+        app:layout_constraintTop_toBottomOf="@+id/birthdayField" />
 
     <TextView
         android:id="@+id/textView6"
@@ -88,8 +92,8 @@
         android:fontFamily="@font/nunito"
         android:text="@string/phone_number"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/emailBox"
-        app:layout_constraintTop_toBottomOf="@+id/emailBox" />
+        app:layout_constraintStart_toStartOf="@+id/emailField"
+        app:layout_constraintTop_toBottomOf="@+id/emailField" />
 
     <TextView
         android:id="@+id/textView7"
@@ -99,11 +103,33 @@
         android:fontFamily="@font/nunito"
         android:text="@string/address"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/phoneBox"
-        app:layout_constraintTop_toBottomOf="@+id/phoneBox" />
+        app:layout_constraintStart_toStartOf="@+id/phoneField"
+        app:layout_constraintTop_toBottomOf="@+id/phoneField" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/nunito"
+        android:text="@string/username"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/locationField"
+        app:layout_constraintTop_toBottomOf="@+id/locationField" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/nunito"
+        android:text="@string/password"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/usernameField"
+        app:layout_constraintTop_toBottomOf="@+id/usernameField" />
 
     <EditText
-        android:id="@+id/nameBox"
+        android:id="@+id/nameField"
         android:layout_width="289dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -115,7 +141,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
-        android:id="@+id/birthdayBox"
+        android:id="@+id/birthdayField"
+        android:focusable="false"
         android:layout_width="289dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -127,7 +154,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <EditText
-        android:id="@+id/emailBox"
+        android:id="@+id/emailField"
         android:layout_width="289dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -139,7 +166,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
-        android:id="@+id/phoneBox"
+        android:id="@+id/phoneField"
         android:layout_width="289dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -151,7 +178,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
-        android:id="@+id/locationBox"
+        android:id="@+id/locationField"
         android:layout_width="289dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -162,16 +189,43 @@
         app:layout_constraintStart_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
+    <EditText
+        android:id="@+id/usernameField"
+        android:layout_width="289dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/text_input_name"
+        android:ems="10"
+        android:hint="@string/username"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="289dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/text_input_name"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
     <Button
         android:id="@+id/nextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/button_green"
         android:text="@string/next"
-        app:layout_constraintStart_toStartOf="@+id/locationBox"
-        app:layout_constraintTop_toBottomOf="@+id/locationBox" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
 
 </android.support.constraint.ConstraintLayout>
