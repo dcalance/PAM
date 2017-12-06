@@ -20,6 +20,19 @@
     <string name="your_location">Your Location</string>
     <string name="next">Next</string>
     <string name="notification">Notification</string>
+    <string name="request_approved">Your Request Has Been Approved</string>
+    <string name="request_details">Request Details</string>
+    <string name="name">Name</string>
+    <string name="patient_name">Jojon Suehndra</string>
+    <string name="disease">Disease</string>
+    <string name="sore_eyes">Sore Eyes</string>
+    <string name="description">Description</string>
+    <string name="random_trash2">Aku ingin menjadi setitik awan kecildi langint bersama mentari yaga hah</string>
+    <string name="doctor">Doctor</string>
+    <string name="specialty">Specialty</string>
+    <string name="rating">4.0</string>
+    <string name="confirm_order">Confirm</string>
+    <string name="cancel_request">Cancel Request</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
