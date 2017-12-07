@@ -13,16 +13,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import java.io.FileNotFoundException
 import android.util.Base64
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
-import com.android.volley.*
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.nio.charset.Charset
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -105,7 +100,7 @@ class SignUpActivity : AppCompatActivity() {
 
 
 
-        inputImage.setOnClickListener{ _ ->
+        imageBox.setOnClickListener{ _ ->
             val intent = Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             imageInput = true
@@ -121,7 +116,7 @@ class SignUpActivity : AppCompatActivity() {
                     && TextUtils.isEmpty(phoneField.error)
                     && TextUtils.isEmpty(locationField.error)
             if (noErrorsOnFields) {
-                val drawable = inputImage.drawable as BitmapDrawable
+                val drawable = imageBox.drawable as BitmapDrawable
                 val bitmap : Bitmap = if (imageInput) {
                     drawable.bitmap
                 } else {
@@ -171,7 +166,7 @@ class SignUpActivity : AppCompatActivity() {
             val targetUri = data!!.data
             try {
                 val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(targetUri))
-                inputImage.setImageBitmap(bitmap)
+                imageBox.setImageBitmap(bitmap)
             } catch (e : FileNotFoundException) {
                 e.printStackTrace()
             }

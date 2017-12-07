@@ -37,7 +37,10 @@
         <activity
             android:name=".CoreActivity"
             android:theme="@style/inTheme" />
-        <activity android:name=".SignUp2Activity"
+        <activity
+            android:name=".SignUp2Activity"
+            android:theme="@style/inTheme" />
+        <activity android:name=".DoctorDetailsActivity"
             android:theme="@style/inTheme"/>
     </application>
 

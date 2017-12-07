@@ -6,35 +6,36 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_doctor_list.*
+import org.json.JSONArray
 import org.json.JSONObject
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
-import android.util.Base64
-import android.util.Base64.URL_SAFE
-import android.widget.Toast
-import com.android.volley.VolleyError
 import java.nio.charset.Charset
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class ProfileFragment : Fragment() {
+class DoctorListFragment : Fragment() {
 
+    private val doctorListAdapter by lazy{
+        DoctorListAdapter(activity, arrayListOf())
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? =
-            inflater!!.inflate(R.layout.fragment_profile, container, false)
-
+            inflater!!.inflate(R.layout.fragment_doctor_list, container, false)
 
     override fun onStart() {
         super.onStart()
-        val url = "http://81.180.72.17/api/Profile/GetProfile"
+        doctorList.adapter = doctorListAdapter
+
+        val url = "http://81.180.72.17/api/Doctor/GetDoctorList"
         val req = object : StringRequest(Request.Method.GET, url,
                 Response.Listener<String> {
                     response -> parseResponse(response)
@@ -58,18 +59,21 @@ class ProfileFragment : Fragment() {
     }
 
     private fun parseResponse(response : String) {
-        val json = JSONObject(response)
-        fullNameBox.text = json.getString("FullName")
-        birthdayBox.text = json.getString("Birthday")
-        emailBox.text = json.getString("Email")
-        phoneBox.text = json.getString("Phone")
-        locationBox.text = json.getString("Address")
-        usernameBox.text = json.getString("Username")
-
-        val encodedImage = json.getString("Base64Photo")
-        val decodedString = Base64.decode(encodedImage, Base64.NO_WRAP)
-        val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-        imageBox.setImageBitmap(decodedByte)
+        val json = JSONArray(response)
+        val doctors = arrayListOf<DoctorInfo>()
+        for(i in 0 until(json.length())) {
+            val element = json.getJSONObject(i)
+            val doctor = DoctorInfo(id = element.getInt("DocId"),
+                    name = element.getString("FullName"),
+                    specialty = element.getString("Specs"),
+                    address = element.getString("Address"),
+                    about = element.getString("About"),
+                    rating = element.getString("Stars").toFloat(),
+                    photo = element.getString("Photo"))
+            doctors.add(doctor)
+        }
+        doctorListAdapter.addAll(doctors)
+        doctorListAdapter.notifyDataSetChanged()
     }
 
-}
+}// Required empty public constructor

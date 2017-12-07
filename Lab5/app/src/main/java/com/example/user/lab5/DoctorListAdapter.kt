@@ -2,7 +2,9 @@ package com.example.user.lab5
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,9 +33,17 @@ class DoctorListAdapter(private val lContext: Activity, rssEntries : ArrayList<D
 
         holder.doctorName.text = currentElement.name
         holder.specialty.text = currentElement.specialty
-        holder.photo.setBackgroundResource(currentElement.photo)
+
+        val decodedString = Base64.decode(currentElement.photo, Base64.NO_WRAP)
+        val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        holder.photo.setImageBitmap(decodedByte)
         holder.ratingBar.rating = currentElement.rating
         holder.ratingScore.text = currentElement.rating.toString()
+        vi.setOnClickListener{
+            val intent = Intent(lContext, DoctorDetailsActivity::class.java)
+            intent.putExtra("docId", currentElement.id)
+            lContext.startActivity(intent)
+        }
 
         return vi
     }

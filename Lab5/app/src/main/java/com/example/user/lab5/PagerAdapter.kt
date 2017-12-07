@@ -10,7 +10,10 @@ class PagerAdapter(fm : FragmentManager, NumOfTabs: Int) : FragmentStatePagerAda
     override fun getItem(position : Int) : Fragment?
     {
         when (position) {
-            0 -> { return ApprovedFragment() }
+            0 -> { return DoctorListFragment() }
+            1 -> { return ProfileFragment() }
+            2 -> { return RequestFragment() }
+            3 -> { return ApprovedFragment() }
             else -> return null
         }
     }
