@@ -58,7 +58,7 @@ class ApprovedFragment : Fragment() {
             nameBox.text = notification.name
             diseaseBox.text = notification.disease
             descriptionBox.text = notification.description
-            val url = "http://81.180.72.17/api/Doctor/GetDoctor/${notification.doctorId}"
+            val url = "http://354d12de.ngrok.io/api/Doctor/GetDoctor/${notification.doctorId}"
             val req = object : StringRequest(Request.Method.GET, url,
                     Response.Listener<String> {
                         response -> parseResponse(response)

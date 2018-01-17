@@ -34,7 +34,7 @@ class ProfileFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val url = "http://81.180.72.17/api/Profile/GetProfile"
+        val url = "http://354d12de.ngrok.io/api/Profile/GetProfile"
         val req = object : StringRequest(Request.Method.GET, url,
                 Response.Listener<String> {
                     response -> parseResponse(response)

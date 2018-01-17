@@ -35,7 +35,7 @@ class DoctorListFragment : Fragment() {
         super.onStart()
         doctorList.adapter = doctorListAdapter
 
-        val url = "http://81.180.72.17/api/Doctor/GetDoctorList"
+        val url = "http://354d12de.ngrok.io/api/Doctor/GetDoctorList"
         val req = object : StringRequest(Request.Method.GET, url,
                 Response.Listener<String> {
                     response -> parseResponse(response)

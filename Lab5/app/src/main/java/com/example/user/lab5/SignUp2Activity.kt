@@ -78,7 +78,7 @@ class SignUp2Activity : AppCompatActivity() {
                 progressBar.visibility = View.VISIBLE
                 registerBtn.isEnabled = false
 
-                val url = "http://81.180.72.17/api/Register/UserReg/"
+                val url = "http://354d12de.ngrok.io/api/Register/UserReg/"
                 val req = object : StringRequest(Request.Method.POST, url,
                         Response.Listener<String> {
                             response -> parseResponse(response)

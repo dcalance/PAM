@@ -81,7 +81,7 @@ class RequestFragment : Fragment() {
 
                 val diseaseForApi = generateDiseaseForApi(diseaseField.text.toString())
 
-                val url = "http://81.180.72.17/api/Doctor/AddConsultation"
+                val url = "http://354d12de.ngrok.io/api/Doctor/AddConsultation"
                 val req = object : StringRequest(Request.Method.POST, url,
                         Response.Listener<String> {
                             response -> parseResponse(response)
